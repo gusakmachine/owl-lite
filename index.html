@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TEST</title>
+    <style>
+        .some-owl-center-alignment-parent {
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .owl-nav-buttons {
+            position: absolute;
+            left: 50%;
+            z-index: 1;
+        }
+        .owl-nav-buttons.--prev, .owl-nav-buttons.--next {
+            width: 30px;
+            height: 30px;
+            background: darkblue;
+            left: -215px;
+            top: 85px;
+        }
+        .owl-nav-buttons.--next {
+            left: 185px;
+        }
+        .progress-indicator {
+            position: absolute;
+            top: 190px;
+            left: calc(50% - 180px);
+            width: 0px;
+            height: 4px;
+            background: black;
+            z-index: 1;
+        }
+        .owl-stage {
+            position: absolute;
+            display: inline-flex;
+         }
+        .owl-item, .owl-item--duplicate {
+            height: 200px;
+            width: 400px;
+            margin-left: 22.5px;
+            margin-right: 22.5px;
+            font-family: Arial, sans-serif;
+            font-size: 2rem;
+            text-align: center;
+        }
+        .no-transition {
+            transition: none !important;
+        }
+    </style>
+</head>
+<body class="some-owl-center-alignment-parent">
+    <div class="owl-nav-buttons" id="owl-nav-buttons">
+        <div class="owl-nav-buttons --prev"></div>
+        <div class="owl-nav-buttons --next"></div>
+    </div>
+    <div class="progress-indicator" id="progress-indicator"></div>
+    <div class="owl-center-alignment">
+        <div class="owl-stage" id="owl-stage">
+            <div class="owl-item" style="background: crimson;">0</div>
+            <div class="owl-item" style="background: crimson;">1</div>
+            <div class="owl-item" style="background: crimson;">2</div>
+            <div class="owl-item" style="background: aquamarine;">3</div>
+        </div>
+    </div>
+    <script src="js/modules/owl-lite.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>
