@@ -1,50 +1,27 @@
 
-var owl;
-
 document.addEventListener("DOMContentLoaded", function () {
-    owl = new Owl(
-        document.getElementById('owl-stage'),
-        document.getElementsByClassName('owl-item'),
-    );
+    let stage = document.querySelector('.owl-stage'),
+        group = stage.querySelector('.owl-group');
+    // let owl = new OwlLite({
+    //     stage: stage,
+    //     group: group,
+    //     delay: 500,
+    //     transition: 500,
+    // });
+    //
+    // owl.launch();
 
-    owl.staticDirection = owl.direction = -1; // (direction = -1) --> Right to left
-    owl.duration = 500;
-    owl.addToMaxPrevItem = owl.addToMaxNextItem = 1;
+    let group_clone = group.cloneNode(true);
 
-    owl.stage.style = 'transition: all ' + owl.transitionDuration + 'ms ease-in-out';
+    group_clone.classList.add('owl--clone');
 
-    if (owl.items.length > 2) {
-        owl.insertBefore(3);
-        owl.insertAfter(3);
-    } else {
-        owl.insertBefore(owl.items.length);
-        owl.insertAfter(owl.items.length);
-    }
+    stage.prepend(group_clone);
+    stage.append(group_clone.cloneNode(true));
 
-    owl.collectItems();
-    owl.allItems[owl.selectItem + owl.beforeDuplicateItem.length].classList.add('active');
+    let pipeline = new OwlPipeline(100, stage);
+    let cargo = new Cargo(0, 50);
+    let cycle = new Cycle(pipeline);
 
-    owl.itemInCenter();
-
-    owl.draw();
-
-    owl.setProgressIndicator(document.getElementById('progress-indicator'));
-    owl.setNavButtons(document.getElementById('owl-nav-buttons'));
-
-    owl.durationStart(owl.duration);
-
-    owl.navButtons.buttons.addEventListener('click', function(e) { owl.buttonsClick(e); });
-    owl.stage.addEventListener('mousedown', function(e) { //drag and drop
-        owl.dragAndDropMouseDown(e);
-        document.addEventListener('mouseup', mouseUpHandler);
-    });
-    document.addEventListener('mousemove', function (e) {
-        owl.dragAndDropMouseMove(e);
-        owl.stopProgressMouseMove(e);
-    });
-});
-
-function mouseUpHandler(e) {
-    owl.dragAndDropMouseUp(e, -1);
-    document.removeEventListener('mouseup', mouseUpHandler);
-}
+    pipeline.put(cargo);
+    cycle.launch();
+})

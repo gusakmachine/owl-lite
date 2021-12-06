@@ -4,68 +4,135 @@
 	<meta charset="UTF-8">
 	<title>TEST</title>
     <style>
-        .some-owl-center-alignment-parent {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .body {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .owl-stage {
+            margin-left: -3400px;
+            display: flex;
+            gap: 120px;
+        }
+        .owl-group {
+            display: flex;
+            gap: 120px;
+        }
+        .owl-item, .owl-item--duplicate {
             display: flex;
             justify-content: center;
-            overflow: hidden;
+            align-items: center;
+            height: 300px;
+            width: 400px;
+            border: 1px solid black;
         }
-        .owl-nav-buttons {
+        .owl-nav {
             position: absolute;
+            top: calc(50vh - 20px);
             left: 50%;
+            display: flex;
             z-index: 1;
         }
-        .owl-nav-buttons.--prev, .owl-nav-buttons.--next {
-            width: 30px;
-            height: 30px;
-            background: darkblue;
-            left: -215px;
-            top: 85px;
-        }
-        .owl-nav-buttons.--next {
-            left: 185px;
-        }
-        .progress-indicator {
+        .owl-nav__buttons {
             position: absolute;
-            top: 190px;
-            left: calc(50% - 180px);
-            width: 0px;
-            height: 4px;
+            /*display: flex;*/
+            display: none;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+            align-items: center;
+        }
+        .owl-nav__buttons.--prev {
+            margin-left: calc(-200px - 20px);
+        }
+        .owl-nav__buttons.--next {
+            margin-left: calc(200px - 20px);
+        }
+
+        .owl-progress-indicator {
+            position: absolute;
+            top: calc(50vh + 140px);
+            left: calc(50% - 190px);
+            display: flex;
+            height: 1px;
+            background: black;
+            z-index: 1;
+            /*transition: width 1000ms ease-in-out;*/
+        }
+        .center-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            height: 100vh;
+            width: 1px;
             background: black;
             z-index: 1;
         }
-        .owl-stage {
+        .left-block-border, .right-block-border {
             position: absolute;
-            display: inline-flex;
-         }
-        .owl-item, .owl-item--duplicate {
-            height: 200px;
-            width: 400px;
-            margin-left: 22.5px;
-            margin-right: 22.5px;
-            font-family: Arial, sans-serif;
-            font-size: 2rem;
-            text-align: center;
+            left: -200px;
+            top: 0;
+            height: 100vh;
+            width: 1px;
+            background: black;
+            z-index: 1;
         }
-        .no-transition {
-            transition: none !important;
+        .right-block-border {
+            left: 200px;
+            background: black;
         }
     </style>
 </head>
-<body class="some-owl-center-alignment-parent">
-    <div class="owl-nav-buttons" id="owl-nav-buttons">
-        <div class="owl-nav-buttons --prev"></div>
-        <div class="owl-nav-buttons --next"></div>
+<body class="body">
+    <span class="center-line">
+        <span class="left-block-border"></span>
+        <span class="right-block-border"></span>
+    </span>
+    <div class="owl-nav">
+        <button class="owl-nav__buttons --prev">
+            <span><--</span>
+        </button>
+        <button class="owl-nav__buttons --next">
+            <span>--></span>
+        </button>
     </div>
-    <div class="progress-indicator" id="progress-indicator"></div>
-    <div class="owl-center-alignment">
-        <div class="owl-stage" id="owl-stage">
-            <div class="owl-item" style="background: crimson;">0</div>
-            <div class="owl-item" style="background: crimson;">1</div>
-            <div class="owl-item" style="background: crimson;">2</div>
-            <div class="owl-item" style="background: aquamarine;">3</div>
+    <div class="owl-progress-indicator"></div>
+    <div class="owl-stage">
+        <div class="owl-group">
+            <div class="owl-item" style="background: lightgray;">
+                <span>0</span>
+            </div>
+            <div class="owl-item" style="background: gray;">
+                <span>1</span>
+            </div>
+            <div class="owl-item" style="background: gray;">
+                <span>2</span>
+            </div>
+            <div class="owl-item" style="background: gray;">
+                <span>3</span>
+            </div>
         </div>
     </div>
-    <script src="js/modules/owl-lite.js"></script>
+
+    <script src="js/modules/Duration.js"></script>
+    <script src="js/modules/Progress.js"></script>
+    <script src="js/modules/FrameEngine.js"></script>
+    <script src="js/modules/Frames.js"></script>
+    <script src="js/modules/Cycle.js"></script>
+    <script src="js/modules/Cargo.js"></script>
+    <script src="js/modules/Offset.js"></script>
+    <script src="js/modules/PipelineFrames.js"></script>
+    <script src="js/modules/Cargos/CargoMove.js"></script>
+    <script src="js/modules/Cargos/CargoWait.js"></script>
+    <script src="js/modules/OwlLite.js"></script>
     <script src="js/index.js"></script>
 </body>
 </html>
