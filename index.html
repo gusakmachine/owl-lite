@@ -57,16 +57,28 @@
             margin-left: calc(200px - 20px);
         }
 
-        .owl-progress-indicator {
+        .owl-progress-bar {
             position: absolute;
-            top: calc(50vh + 140px);
+            top: 80vh;
             left: calc(50% - 190px);
+            z-index: 1;
             display: flex;
-            height: 1px;
+            margin: auto 0;
+            width: 380px;
+            height: 3px;
+            overflow: hidden;
+            background: gray;
+        }
+        .owl-progress__indicator {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            height: 100%;
+            width: 100%;
             background: black;
             z-index: 1;
-            /*transition: width 1000ms ease-in-out;*/
         }
+
         .center-line {
             position: absolute;
             left: 50%;
@@ -92,10 +104,6 @@
     </style>
 </head>
 <body class="body">
-    <span class="center-line">
-        <span class="left-block-border"></span>
-        <span class="right-block-border"></span>
-    </span>
     <div class="owl-nav">
         <button class="owl-nav__buttons --prev">
             <span><--</span>
@@ -104,7 +112,9 @@
             <span>--></span>
         </button>
     </div>
-    <div class="owl-progress-indicator"></div>
+    <div class="owl-progress-bar">
+        <span class="owl-progress__indicator"></span>
+    </div>
     <div class="owl-stage">
         <div class="owl-group">
             <div class="owl-item" style="background: lightgray;">
@@ -123,16 +133,17 @@
     </div>
 
     <script src="js/modules/Duration.js"></script>
-    <script src="js/modules/Progress.js"></script>
-    <script src="js/modules/FrameEngine.js"></script>
+    <script src="js/modules/Helpers/Progress.js"></script>
+    <script src="js/modules/Core/FrameEngine.js"></script>
     <script src="js/modules/Frames.js"></script>
     <script src="js/modules/Cycle.js"></script>
+    <script src="js/modules/Helpers/Offset.js"></script>
+<!--    <script src="js/modules/State.js"></script>-->
     <script src="js/modules/Cargo.js"></script>
-    <script src="js/modules/Offset.js"></script>
-    <script src="js/modules/PipelineFrames.js"></script>
-    <script src="js/modules/Cargos/CargoMove.js"></script>
-    <script src="js/modules/Cargos/CargoWait.js"></script>
-    <script src="js/modules/OwlLite.js"></script>
+    <script src="js/modules/Pipeline.js"></script>
+    <script src="js/modules/Cargos/OwlCargoOffset.js"></script>
+    <script src="js/modules/Cargos/OwlCargoProgress.js"></script>
+<!--    <script src="js/modules/OwlLite.js"></script>-->
     <script src="js/index.js"></script>
 </body>
 </html>
