@@ -1,49 +1,99 @@
-//EDIT
+//In work
 class OwlLite {
     constructor(props) {
         this.stage = props.stage;
-        this.group = props.group;
+        this.group = this.stage.firstElementChild;
+        this.progressBar = props.progress;
+        this.indicator = this.progressBar.firstElementChild;
         this.delay = props.delay;
-        this.transition = props.transition;
-        this.duration = this.delay + this.transition;
-        // this.cycle = new OwlPipeline(this.duration, this.stage);
-        //
-        // this.cycle.setCargo(
-        //     new OwlCargoMove(0, this.transition, 520)
-        // );
-        //
-        // this.cycle.setCargo(
-        //     new OwlCargoWait(this.transition, this.duration)
-        // );
+        this.duration = props.duration;
+
+        this.items = this.group.children;
+        this.count = this.items.length;
+        this.item0Rect = this.items[0].getBoundingClientRect();
+        this.item1Rect = this.items[1].getBoundingClientRect();
+        this.offset = Math.abs(this.item0Rect.right - this.item1Rect.right);
+        this.posXMax = this.offset * this.count;
+
+        //if (props.dragging)
+            //this.dragging();
+
+        this.clone();
+        this.setAnimation();
     }
 
-    launch() {
-        let groupClone = this.group.cloneNode(true);
+    // dragging() {
+    //     this.dragAndDrop = new DragAndDrop(this.stage, 0, this.posXMax);
+    //
+    //     this.stage.addEventListener('mouseup', (e) => {
+    //         this.matrix = new WebKitCSSMatrix(this.dragAndDrop.style.transform);
+    //         let posX = Math.round(this.matrix.m41 / this.offset) * this.offset;
+    //         this.stage.style.transition = 'transform 250ms ease-in-out';
+    //         TransformRenderer.translateX(this.stage, posX);
+    //     });
+    // }
 
-        groupClone.classList.add('owl--clone');
+    clone() {
+        let groupTemplate = this.group.cloneNode(true);
 
-        this.stage.prepend(groupClone);
-        this.stage.append(groupClone.cloneNode(true));
+        groupTemplate.classList.add('owl--clone');
 
-        //this.cycle.launch();
+        this.stage.prepend(groupTemplate);
+        this.stage.append(groupTemplate.cloneNode(true));
+    }
 
-        // let stageOffset = new OwlCargoOffset(500, 1000, stage, 520);
-        // let progressBarOffset = new OwlCargoOffset(500, 1000, progressBar, 520);
-        // let progressBarVisibility = new OwlCargoVisibility(500, 1000, progressBar);
-        // let indicatorProgress = new OwlCargoProgress(0, 500, indicator);
+    setAnimation() {
+        let flow = new FrameFlow();
+        let stageAnimation = new PipelineWorker(0, true);
+        let progressAnimation = new PipelineWorker(0, true);
+        let indicatorAnimation = new PipelineWorker(0, true);
 
-        //pipeline.put(stageOffset);
-        //pipeline.put(progressBarVisibility);
-        //pipeline.put(indicatorProgress);
+        let moveParams = {
+            offset: this.offset,
+            posXMax: this.posXMax,
+        };
 
-        // let stage = document.querySelector('.owl-stage');
-        // let groupClone = document.querySelector('.owl-group').cloneNode(true);
-        // let progressBar = document.querySelector('.owl-progress-bar');
-        // let indicator = document.querySelector('.owl-progress__indicator');
-        //
-        // groupClone.classList.add('owl--clone');
-        // stage.prepend(groupClone);
-        // stage.append(groupClone.cloneNode(true));
+        let stageWait = new Wait(500);
+        let progressWait = new Wait(500);
+        let indicatorWait = new Wait(500);
+        let stageMove = new MoveX(500, this.stage, moveParams);
+        let indicatorMove = new MoveXByPercent(500, this.indicator);
+        let progressVisibility = new ChangingVisibility(500, this.progressBar);
 
+        let intervalId;
+
+        //this.stage.addEventListener('mouseover', function () {
+        // document.addEventListener('keydown', function () {
+            //intervalId = setInterval(() => {
+            //     if (stageAnimation.cargos[stageAnimation.cargoIndex] instanceof Wait) {
+            //         stageWait.pause(true);
+            //         indicatorMove.pause(true);
+            //         progressVisibility.pause(true);
+            //     }
+            //}, 15);
+        // });
+
+        //this.stage.addEventListener('mouseout', function () {
+        // document.addEventListener('keyup', function () {
+        //     clearInterval(intervalId);
+        //     stageWait.pause(false);
+        //     indicatorMove.pause(false);
+        //     progressVisibility.pause(false);
+        // });
+
+        stageAnimation.put(stageWait);
+        stageAnimation.put(stageMove);
+
+        progressAnimation.put(progressVisibility);
+        progressAnimation.put(progressWait);
+
+        indicatorAnimation.put(indicatorMove);
+        indicatorAnimation.put(indicatorWait);
+
+        flow.put(stageAnimation);
+        flow.put(progressAnimation);
+        flow.put(indicatorAnimation);
+
+        flow.launch();
     }
 }
