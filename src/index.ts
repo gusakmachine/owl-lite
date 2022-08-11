@@ -1,9 +1,9 @@
 import "./styles/index.sass";
-import focus from "./utils/focus";
-import FrameHandler from "./ecs/FrameHandler";
-import StageEntity from "./ecs/entities/StageEntity/StageEntity";
-import TranslateSystem from "./ecs/systems/TranslateSystem/TranslateSystem";
-import Input from "./ecs/environment/Input/Input";
+import focus from "./environment/utils/Focus/focus";
+import FrameHandler from "./core/FrameHandler/FrameHandler";
+import StageEntity from "./features/movement/entities/StageEntity/StageEntity";
+import TransitionSystem from "./features/movement/systems/TransitionSystem/TransitionSystem";
+import Input from "./core/Input/Input";
 
 document.addEventListener('DOMContentLoaded', () => {
     let stage = document.querySelector<HTMLElement>('.stage'),
@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let input = new Input();
     let stageEntity = new StageEntity(stage);
-    let translateSystem = new TranslateSystem([
+    let transitionSystem = new TransitionSystem([
         stageEntity,
     ]);
     let fh = new FrameHandler(input, [
-        translateSystem,
+        transitionSystem,
     ]);
 
     fh.run();
