@@ -1,4 +1,4 @@
-import {MousePoint} from "../../../features/movement/systems/TransitionSystem/types";
+import {MousePoint} from "../../../features/types";
 
 const isPointInSquare: IsPointInSquare = (point, rect) =>
 {
