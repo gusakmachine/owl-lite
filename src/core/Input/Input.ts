@@ -1,4 +1,4 @@
-import MouseCollector from "./collectors/MouseCollector/MouseCollector";
+import MouseCollector from "./MouseCollector/MouseCollector";
 
 export default class Input
 {

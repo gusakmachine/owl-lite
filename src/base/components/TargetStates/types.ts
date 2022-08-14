@@ -1,12 +1,4 @@
-export type State = {
-    transform: {
-        translate: {
-            x: number,
-        },
-    },
-}
-
-export type Target = {
+export type Target<State> = {
     index: number,
     key: number,
     state: State
@@ -16,4 +8,4 @@ export type Target = {
     }
 }
 
-export type Targets = Target[];
+export type Targets<State> = Target<State>[];

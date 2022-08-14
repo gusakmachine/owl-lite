@@ -2,14 +2,14 @@ import BaseComponent from "../BaseComponent/BaseComponent";
 import Progress from "../Progress/Progress";
 import {Target, Targets} from "./types";
 
-export default class TargetStates extends BaseComponent
+export default class TargetStates<State> extends BaseComponent
 {
     loop: boolean;
     progress: Progress;
-    targets: Targets;
-    current: Target;
+    targets: Targets<State>;
+    current: Target<State>;
 
-    constructor(targets: Targets, duration: number)
+    constructor(targets: Targets<State>, duration: number)
     {
         super();
         this.loop = true;

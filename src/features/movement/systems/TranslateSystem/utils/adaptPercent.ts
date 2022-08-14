@@ -1,6 +1,7 @@
 import {Targets} from "../../../../../base/components/TargetStates/types";
+import {State} from "../../../../types";
 
-const adaptPercent = (targets: Targets, posX: number): number | undefined =>
+const adaptPercent = (targets: Targets<State>, posX: number): number | undefined =>
 {
     let minDiff;
     let percent;

@@ -1,8 +1,8 @@
-import {MousePosition} from "../../types";
+import {MousePoint} from "../../../environment/types/positions";
 
 export default class MouseCollector {
-    down: MousePosition | null = null;
-    position: MousePosition = { x: 0, y: 0 };
+    down: MousePoint | null = null;
+    position: MousePoint = { x: 0, y: 0 };
 
     constructor() {
         document.body.onmousedown = (me) => {

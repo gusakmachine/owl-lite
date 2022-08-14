@@ -1,7 +1,8 @@
 import Position from "../../../../../base/components/Position/Position";
 import TargetStates from "../../../../../base/components/TargetStates/TargetStates";
+import {State} from "../../../../types";
 
-const computePosX = (position: Position, targetState: TargetStates): number =>
+const computePosX = (position: Position, targetState: TargetStates<State>): number =>
 {
     const deltaPercent = targetState.progress.deltaPercent;
     const cPosX = targetState.current.state.transform.translate.x;

@@ -8,6 +8,14 @@ import {Targets} from "./base/components/TargetStates/types";
 import DragAndDropSystem from "./features/movement/systems/DragAndDropSystem/DragAndDropSystem";
 import RenderSystem from "./features/movement/systems/RenderSystem/RenderSystem";
 
+type State = {
+    transform: {
+        translate: {
+            x: number,
+        },
+    },
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     let stage = document.querySelector<HTMLElement>('.stage'),
         focusable = document.querySelector<HTMLElement>('.focused');
@@ -111,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     ];
 
-    let targets: Targets = [];
+    let targets: Targets<State> = [];
 
     for (let index = 0; index < keyframes.length; index++) {
         let keyframe = keyframes[index];

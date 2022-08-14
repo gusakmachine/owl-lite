@@ -1,4 +1,4 @@
-import {MousePoint} from "../../../features/types";
+import {MousePoint} from "../../types/positions";
 
 const isPointInSquare: IsPointInSquare = (point, rect) =>
 {

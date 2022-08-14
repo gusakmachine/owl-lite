@@ -4,12 +4,12 @@ import TargetStates from "../../../../base/components/TargetStates/TargetStates"
 import {Targets} from "../../../../base/components/TargetStates/types";
 import PositionsHistory from "../../Components/PositionsHistory/PositionsHistory";
 
-export default class StageEntity extends BaseEntity {
+export default class StageEntity<State> extends BaseEntity {
     public position: Position;
     public positionsHistory: PositionsHistory;
-    public targetStates: TargetStates;
+    public targetStates: TargetStates<State>;
 
-    constructor(element: HTMLElement, targets: Targets, duration: number)
+    constructor(element: HTMLElement, targets: Targets<State>, duration: number)
     {
         super(element);
         const rect = element.getBoundingClientRect();
