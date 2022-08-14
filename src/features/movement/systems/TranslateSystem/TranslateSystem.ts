@@ -2,10 +2,9 @@ import {Entity} from "../../../types";
 import FrameHandler from "../../../../core/FrameHandler/FrameHandler";
 import BaseSystem from "../../../../base/systems/BaseSystem/BaseSystem";
 import isPointInSquare from "../../../../environment/utils/IsPointInSquare/isPointInSquare";
-import adaptPercent from "./utils/adaptPercent";
 import computePosX from "./utils/computePosX";
 
-export default class TransitionSystem extends BaseSystem<Entity>
+export default class TranslateSystem extends BaseSystem<Entity>
 {
     handle(fh: FrameHandler, entity: Entity)
     {
@@ -15,17 +14,10 @@ export default class TransitionSystem extends BaseSystem<Entity>
         const mousePosition = fh.input.mouse.position;
         const stageRect = element.getBoundingClientRect();
 
-        if (isPointInSquare(mousePosition, stageRect)) {
+        if (isPointInSquare(mousePosition, stageRect))
             return;
-        }
-
-        if (oldPosX !== undefined && oldPosX !== position.x) {
-            const percent = adaptPercent(targetStates.targets, position.x);
-
-            if (percent != undefined) {
-                progress.setPercent(percent);
-            }
-        }
+        if (oldPosX !== undefined && oldPosX !== position.x)
+            return;
 
         targetStates.update();
         position.set({ x: computePosX(position, targetStates) });

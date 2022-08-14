@@ -2,11 +2,12 @@ import "./styles/index.sass";
 import focus from "./environment/utils/Focus/focus";
 import FrameHandler from "./core/FrameHandler/FrameHandler";
 import StageEntity from "./features/movement/entities/StageEntity/StageEntity";
-import TransitionSystem from "./features/movement/systems/TranslateSystem/TranslateSystem";
 import Input from "./core/Input/Input";
 import {Targets} from "./base/components/TargetStates/types";
 import DragAndDropSystem from "./features/movement/systems/DragAndDropSystem/DragAndDropSystem";
 import RenderSystem from "./features/movement/systems/RenderSystem/RenderSystem";
+import PreTranslate from "./features/movement/systems/PreTranslate/PreTranslate";
+import TranslateSystem from "./features/movement/systems/TranslateSystem/TranslateSystem";
 
 type State = {
     transform: {
@@ -149,7 +150,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let dragAndDropSystem = new DragAndDropSystem([
         stageEntity,
     ]);
-    let transitionSystem = new TransitionSystem([
+    let preTranslate = new PreTranslate([
+        stageEntity
+    ]);
+    let transitionSystem = new TranslateSystem([
         stageEntity,
     ]);
     let renderSystem = new RenderSystem([
@@ -157,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ])
     let fh = new FrameHandler(input, [
         dragAndDropSystem,
+        preTranslate,
         transitionSystem,
         renderSystem
     ]);
