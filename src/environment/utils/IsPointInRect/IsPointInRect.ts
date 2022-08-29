@@ -1,6 +1,6 @@
 import {MousePoint} from "../../types/positions";
 
-const isPointInSquare: IsPointInSquare = (point, rect) =>
+const isPointInRect: isPointInRect = (point, rect) =>
 {
     let left = rect.x;
     let right = rect.width + rect.x;
@@ -12,6 +12,6 @@ const isPointInSquare: IsPointInSquare = (point, rect) =>
     return point.y > top && point.y < bottom;
 }
 
-type IsPointInSquare = (point: MousePoint, rect: DOMRect) => boolean;
+type isPointInRect = (point: MousePoint, rect: DOMRect) => boolean;
 
-export default isPointInSquare;
+export default isPointInRect;

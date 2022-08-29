@@ -1,24 +1,21 @@
 import {Entity} from "../../../types";
 import FrameHandler from "../../../../core/FrameHandler/FrameHandler";
 import BaseSystem from "../../../../base/systems/BaseSystem/BaseSystem";
-import isPointInSquare from "../../../../environment/utils/IsPointInSquare/isPointInSquare";
 import computePosX from "./utils/computePosX";
 
 export default class TranslateSystem extends BaseSystem<Entity>
 {
     handle(fh: FrameHandler, entity: Entity)
     {
-        const {element, position, targetStates, positionsHistory} = entity;
-        const oldPosX = positionsHistory.oldPosX;
+        const {position, targetStates, positionsHistory, translateFlags} = entity;
         const progress = targetStates.progress;
-        const mousePosition = fh.input.mouse.position;
-        const stageRect = element.getBoundingClientRect();
 
-        if (isPointInSquare(mousePosition, stageRect))
+        if (translateFlags.isPointInRect)
             return;
-        if (oldPosX !== undefined && oldPosX !== position.x)
+        if (translateFlags.outOfSync)
             return;
 
+        //DON'T CHANGE ORDER
         targetStates.update();
         position.set({ x: computePosX(position, targetStates) });
         positionsHistory.setOldPosX(position.x);

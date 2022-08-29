@@ -1,33 +1,68 @@
 import "./styles/index.sass";
-import focus from "./environment/utils/Focus/focus";
 import FrameHandler from "./core/FrameHandler/FrameHandler";
-import StageEntity from "./features/movement/entities/StageEntity/StageEntity";
 import Input from "./core/Input/Input";
 import {Targets} from "./base/components/TargetStates/types";
 import DragAndDropSystem from "./features/movement/systems/DragAndDropSystem/DragAndDropSystem";
 import RenderSystem from "./features/movement/systems/RenderSystem/RenderSystem";
-import PreTranslate from "./features/movement/systems/PreTranslate/PreTranslate";
+import PreTranslateSystem from "./features/movement/systems/PreTranslateSystem/PreTranslateSystem";
 import TranslateSystem from "./features/movement/systems/TranslateSystem/TranslateSystem";
+import {State} from "./features/types";
+import TranslateEntity from "./features/movement/entities/TranslateEntity/TranslateEntity";
 
-type State = {
-    transform: {
-        translate: {
-            x: number,
+type Keyframe = {
+    key: number,
+    state: {
+        transform: {
+            translate: {
+                x: number,
+            },
         },
     },
 }
 
+type Keyframes = Keyframe[];
+
+function keyframesToTargetState(keyframes: Keyframes): Targets<State> {
+    let targets: Targets<State> = [];
+
+    for (let index = 0; index < keyframes.length; index++) {
+        let keyframe = keyframes[index];
+        let pKeyframe = index? keyframes[index - 1] : keyframe;
+        let state = keyframe.state;
+        let pState = pKeyframe.state;
+
+        targets.push({
+            index: index,
+            key: keyframe.key,
+            state: state,
+            delta: {
+                key: keyframe.key - pKeyframe.key,
+                state: {
+                    transform: {
+                        translate: {
+                            x: state.transform.translate.x - pState.transform.translate.x,
+                        },
+                    },
+                }
+            },
+        });
+    }
+
+    return targets;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     let stage = document.querySelector<HTMLElement>('.stage'),
+        progressBody = document.querySelector<HTMLElement>('.progress-body'),
         focusable = document.querySelector<HTMLElement>('.focused');
 
-    if (!stage || !focusable)
+    if (!stage || !progressBody || !focusable)
         return;
 
     // focus(stage, focusable);
-    
+
     let offset = -1080;
-    let keyframes = [
+    let stageKeyframes = [
         {
             key: 0,
             state: {
@@ -119,50 +154,85 @@ document.addEventListener('DOMContentLoaded', () => {
             },
         },
     ];
-
-    let targets: Targets<State> = [];
-
-    for (let index = 0; index < keyframes.length; index++) {
-        let keyframe = keyframes[index];
-        let pKeyframe = index? keyframes[index - 1] : keyframe;
-        let state = keyframe.state;
-        let pState = pKeyframe.state;
-
-        targets.push({
-            index: index,
-            key: keyframe.key,
-            state: state,
-            delta: {
-                key: keyframe.key - pKeyframe.key,
-                state: {
-                    transform: {
-                        translate: {
-                            x: state.transform.translate.x - pState.transform.translate.x,
-                        },
+    let progressKeyframes = [
+        {
+            key: 0,
+            state: {
+                transform: {
+                    translate: {
+                        x: 0,
                     },
-                }
+                },
             },
-        });
-    }
+        },
+        {
+            key: 75,
+            state: {
+                transform: {
+                    translate: {
+                        x: 180,
+                    },
+                },
+            },
+        },
+        {
+            key: 76,
+            state: {
+                transform: {
+                    translate: {
+                        x: 180,
+                    },
+                },
+            },
+        },
+        {
+            key: 77,
+            state: {
+                transform: {
+                    translate: {
+                        x: 0,
+                    },
+                },
+            },
+        },
+        {
+            key: 100,
+            state: {
+                transform: {
+                    translate: {
+                        x: 0,
+                    },
+                },
+            },
+        },
+    ];
 
     let input = new Input();
-    let stageEntity = new StageEntity(stage, targets, 4000);
+
+    let stageEntity = new TranslateEntity(
+        stage, keyframesToTargetState(stageKeyframes), 4000
+    );
+    let progressBarEntity = new TranslateEntity(
+        progressBody, keyframesToTargetState(progressKeyframes), 1000
+    );
+
     let dragAndDropSystem = new DragAndDropSystem([
-        stageEntity,
-    ]);
-    let preTranslate = new PreTranslate([
         stageEntity
     ]);
-    let transitionSystem = new TranslateSystem([
-        stageEntity,
+    let preTranslateSystem = new PreTranslateSystem([
+        progressBarEntity, stageEntity
+    ]);
+    let translateSystem = new TranslateSystem([
+        progressBarEntity, stageEntity
     ]);
     let renderSystem = new RenderSystem([
-        stageEntity,
-    ])
+        progressBarEntity, stageEntity
+    ]);
+
     let fh = new FrameHandler(input, [
         dragAndDropSystem,
-        preTranslate,
-        transitionSystem,
+        preTranslateSystem,
+        translateSystem,
         renderSystem
     ]);
 

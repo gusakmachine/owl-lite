@@ -1,7 +1,7 @@
 import BaseSystem from "../../../../base/systems/BaseSystem/BaseSystem";
 import {Entity} from "../../../types";
 import FrameHandler from "../../../../core/FrameHandler/FrameHandler";
-import isPointInSquare from "../../../../environment/utils/IsPointInSquare/isPointInSquare";
+import isPointInRect from "../../../../environment/utils/IsPointInRect/IsPointInRect";
 
 export default class DragAndDropSystem extends BaseSystem<Entity>
 {
@@ -14,7 +14,7 @@ export default class DragAndDropSystem extends BaseSystem<Entity>
         const stageRect = element.getBoundingClientRect();
         let offset = 0;
 
-        if (!isPointInSquare(mousePosition, stageRect)) {
+        if (!isPointInRect(mousePosition, stageRect)) {
             return;
         }
 

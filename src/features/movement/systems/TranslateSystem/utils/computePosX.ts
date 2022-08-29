@@ -8,6 +8,7 @@ const computePosX = (position: Position, targetStates: targetStates<State>): num
 
     const cKey = targetStates.current.key;
     const cPosX = targetStates.current.state.transform.translate.x;
+
     const cDeltaTranslateX = targetStates.current.delta.state.transform.translate.x;
     const cDeltaPercent = targetStates.current.delta.key;
 
