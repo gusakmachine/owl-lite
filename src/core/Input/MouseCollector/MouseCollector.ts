@@ -1,4 +1,4 @@
-import {MousePoint} from "../../../environment/types/positions";
+import {MousePoint} from "../../../lib/models/MoousePoint";
 
 export default class MouseCollector {
     down: MousePoint | null = null;

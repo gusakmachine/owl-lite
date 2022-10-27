@@ -1,35 +1,25 @@
 import Input from "../Input/Input";
-import {Systems, Timestamps} from "./types";
+import {Timestamp} from "../../lib/models/Timestamp";
+import SystemManager from "../SystemManager/SystemManager";
 
 export default class FrameHandler
 {
     input: Input;
-    systems: Systems;
+    systems: SystemManager[];
     deltaTime: number;
-    timestamps: Timestamps;
+    timestamp: Timestamp;
 
-    constructor(input: Input, systems: Systems)
+    constructor(input: Input, systems: SystemManager[])
     {
         this.input = input;
         this.systems = systems;
         this.deltaTime = 0;
-        this.timestamps = {
-            previous: 0,
-            current: 0,
-        };
-    }
-
-    setTimeStamp(timestamp: number): void
-    {
-        this.timestamps = {
-            previous: this.timestamps.current,
-            current: timestamp,
-        };
+        this.timestamp = new Timestamp(0,0);
     }
 
     setDeltaTime(): void
     {
-        let {previous, current} = this.timestamps;
+        let {previous, current} = this.timestamp;
 
         if (previous && current) {
             this.deltaTime = current - previous;
@@ -38,10 +28,19 @@ export default class FrameHandler
         }
     }
 
+    setTimeStamp(timestamp: number): void
+    {
+        this.timestamp = new Timestamp(
+            this.timestamp.current,
+            timestamp,
+        );
+
+        this.setDeltaTime();
+    }
+
     run(timestamp: number = 0): void
     {
         this.setTimeStamp(timestamp);
-        this.setDeltaTime();
 
         if (this.deltaTime) {
             for (let system of this.systems) {
